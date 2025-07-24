@@ -8,7 +8,7 @@
 ![NPM Version](https://img.shields.io/npm/v/text-similarity-node)
 ![TypeScript](https://img.shields.io/badge/logo-typescript-blue?logo=typescript)
 [![Tests](https://img.shields.io/github/actions/workflow/status/piotrmaciejbednarski/text-similarity-node/test.yml?branch=main&label=tests)](https://github.com/piotrmaciejbednarski/text-similarity-node/actions/workflows/test.yml)
-[![License](https://img.shields.io/github/license/piotrmaciejbednarski/text-similarity-node)](https://github.com/piotrmaciejbednarski/text-similarity-node/blob/main/LICENSE)
+[![License](https://img.shields.io/github/license/piotrmaciejbednarski/text-similarity-node?)](https://github.com/piotrmaciejbednarski/text-similarity-node/blob/main/LICENSE)
 
 High-performance and memory efficient native C++ text similarity algorithms for Node.js with full Unicode support. text-similarity-node provides a suite of production-ready algorithms that demonstrably outperform pure JavaScript alternatives, especially in memory usage and specific use cases. This library is the best choice for comparing large documents where other JavaScript libraries slow down.
 
