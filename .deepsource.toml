@@ -21,6 +21,7 @@ name = "cxx"
 [[transformers]]
 name = "clang-format"
 
+# TODO: Remove in future, because we use Biome for code formatting
 [[transformers]]
 name = "prettier"
 
