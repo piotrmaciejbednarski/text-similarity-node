@@ -2,9 +2,9 @@
 beforeAll(() => {
   // Ensure the native addon is built before running tests
   try {
-    require('../index');
+    require("../index");
   } catch (error) {
-    console.error('Failed to load native addon:', error.message);
+    console.error("Failed to load native addon:", error.message);
     process.exit(1);
   }
 });
@@ -17,12 +17,14 @@ expect.extend({
     const pass = received >= min - epsilon && received <= max + epsilon;
     if (pass) {
       return {
-        message: () => `expected ${received} not to be within range ${min} - ${max}`,
+        message: () =>
+          `expected ${received} not to be within range ${min} - ${max}`,
         pass: true,
       };
     } else {
       return {
-        message: () => `expected ${received} to be within range ${min} - ${max}`,
+        message: () =>
+          `expected ${received} to be within range ${min} - ${max}`,
         pass: false,
       };
     }
