@@ -1,0 +1,119 @@
+{
+  "name": "text-similarity-node",
+  "version": "1.0.0",
+  "description": "Advanced Unicode-aware text similarity library with 13+ algorithms, modern C++17/20 implementation, SIMD optimizations, and comprehensive Promise/async support",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "install": "node-gyp-build",
+    "build": "node-gyp rebuild --release",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "benchmark": "node benchmarks/comparison.mjs",
+    "prebuild": "prebuildify --napi --strip",
+    "prebuild-all": "prebuildify --napi --strip --all",
+    "prepublishOnly": "npm run build && npm test",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --write .",
+    "lint:fix-unsafe": "biome lint --write --unsafe .",
+    "check": "biome check .",
+    "check:fix": "biome check --write .",
+    "precommit": "npm run format && npm run lint:fix"
+  },
+  "keywords": [
+    "text-similarity",
+    "string-similarity",
+    "levenshtein",
+    "damerau-levenshtein",
+    "hamming",
+    "jaro",
+    "jaro-winkler",
+    "jaccard",
+    "sorensen-dice",
+    "overlap-coefficient",
+    "tversky",
+    "cosine-similarity",
+    "euclidean-distance",
+    "manhattan-distance",
+    "chebyshev-distance",
+    "edit-distance",
+    "fuzzy-matching",
+    "string-matching",
+    "text-analysis",
+    "nlp",
+    "natural-language-processing",
+    "unicode-aware",
+    "utf8-support",
+    "native-addon",
+    "c++17",
+    "c++20",
+    "simd-optimization",
+    "performance",
+    "fast",
+    "high-performance",
+    "memory-pool",
+    "thread-safe",
+    "promise-api",
+    "async-await",
+    "worker-threads",
+    "batch-processing",
+    "production-ready"
+  ],
+  "author": {
+    "name": "Piotr Bednarski",
+    "email": "piotr.maciej.bednarski@gmail.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/piotrmaciejbednarski/text-similarity-node.git"
+  },
+  "bugs": {
+    "url": "https://github.com/piotrmaciejbednarski/text-similarity-node/issues"
+  },
+  "homepage": "https://github.com/piotrmaciejbednarski/text-similarity-node#readme",
+  "gypfile": true,
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "binding.gyp",
+    "src/**/*",
+    "prebuilds/**/*",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "node-addon-api": "^8.5.0",
+    "node-gyp-build": "^4.8.4"
+  },
+  "devDependencies": {
+    "tinybench": "^4.0.1",
+    "string-similarity": "^4.0.4",
+    "natural": "^8.1.0",
+    "@biomejs/biome": "^2.1.2",
+    "fast-levenshtein": "^3.0.0",
+    "fastest-levenshtein": "^1.0.16",
+    "jest": "^29.7.0",
+    "js-levenshtein": "^1.1.6",
+    "node-gyp": "^11.2.0",
+    "prebuildify": "^6.0.0",
+    "similarity": "^1.2.1",
+    "string-comparison": "^1.3.0",
+    "talisman": "^1.1.4",
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "os": [
+    "win32",
+    "darwin",
+    "linux"
+  ],
+  "cpu": [
+    "x64",
+    "arm64"
+  ]
+}

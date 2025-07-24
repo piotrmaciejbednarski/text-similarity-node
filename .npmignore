@@ -1,0 +1,40 @@
+# Source files (only ship built addon)
+src/
+
+# Development files
+test/
+benchmark/
+.github/
+.gitignore
+
+# Build artifacts we don't need in package
+build/config.gypi
+build/gyp-mac-tool
+build/Makefile
+build/*.mk
+
+# Keep only the built addon
+!build/Release/text_similarity.node
+
+# Documentation
+*.md
+!README.md
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Development dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

@@ -1,0 +1,221 @@
+name: Prebuild Binaries
+permissions:
+  contents: write   # allow GITHUB_TOKEN to push commits
+
+on:
+  workflow_dispatch: {}   # manual trigger only
+
+jobs:
+  # Job A: build and upload artifacts in parallel
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          # Linux runners
+          - os: ubuntu-latest
+            arch: x64
+          - os: ubuntu-latest
+            arch: arm64
+          - os: ubuntu-latest
+            arch: armv7
+          # Windows runners
+          - os: windows-2022
+            arch: x64
+          - os: windows-2022
+            arch: arm64
+          # macOS runners
+          - os: macos-13
+            arch: x64
+          - os: macos-latest
+            arch: arm64
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Enable ccache
+        uses: hendrikmuhs/ccache-action@v1
+        with:
+          key: ${{ runner.os }}-${{ matrix.arch }}-node${{ matrix.node-version }}
+          max-size: 500M     # cache compiler outputs
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Install dependencies
+        run: npm ci       # clean install
+
+      # Setup cross-compilers on Linux for ARM targets
+      - name: Setup cross-compiler (Linux arm64)
+        if: runner.os == 'Linux' && matrix.arch == 'arm64'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++-aarch64-linux-gnu binutils-aarch64-linux-gnu
+          echo "CC=aarch64-linux-gnu-gcc"         >> $GITHUB_ENV
+          echo "CXX=aarch64-linux-gnu-g++"        >> $GITHUB_ENV
+          echo "STRIP=aarch64-linux-gnu-strip"    >> $GITHUB_ENV
+
+      - name: Setup cross-compiler (Linux armv7)
+        if: runner.os == 'Linux' && matrix.arch == 'armv7'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++-arm-linux-gnueabihf binutils-arm-linux-gnueabihf
+          echo "CC=arm-linux-gnueabihf-gcc"       >> $GITHUB_ENV
+          echo "CXX=arm-linux-gnueabihf-g++"      >> $GITHUB_ENV
+          echo "STRIP=arm-linux-gnueabihf-strip"  >> $GITHUB_ENV
+
+      # Build prebuilt binary for specific architecture only
+      - name: Build prebuilt binary
+        shell: bash
+        run: |
+          # Determine target platform based on runner OS and matrix arch
+          case "${{ runner.os }}-${{ matrix.arch }}" in
+            Linux-x64)     target_arch="--arch=x64" ;;
+            Linux-arm64)   target_arch="--arch=arm64" ;;
+            Linux-armv7)   target_arch="--arch=arm" ;;
+            Windows-x64)   target_arch="--arch=x64" ;;
+            Windows-arm64) target_arch="--arch=arm64" ;;
+            macOS-x64)     target_arch="--arch=x64" ;;
+            macOS-arm64)   target_arch="--arch=arm64" ;;
+            *)             echo "Unsupported platform: ${{ runner.os }}-${{ matrix.arch }}"; exit 1 ;;
+          esac
+          
+          echo "Building for ${{ runner.os }}-${{ matrix.arch }} with $target_arch"
+          
+          # Build only for the specific target architecture
+          if [ "${{ matrix.arch }}" = "x64" ] && [ "${{ runner.os }}" != "Linux" ]; then
+            # Use --strip for x64 on macOS and Windows
+            npx prebuildify --napi --strip $target_arch
+          else
+            # Build without built-in strip, then strip manually
+            npx prebuildify --napi $target_arch
+            
+            # Strip binaries manually
+            if [ "${{ runner.os }}" = 'Linux' ] && [ -n "$STRIP" ]; then
+              find prebuilds -name "*.node" -exec $STRIP {} \;
+            elif [ "${{ runner.os }}" = 'macOS' ]; then
+              find prebuilds -name "*.node" -exec strip {} \;
+            fi
+          fi
+          
+          # Verify what was built
+          echo "Built files:"
+          find prebuilds -name "*.node" -exec file {} \;
+
+      - name: Upload prebuild artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: prebuilds-${{ matrix.os }}-${{ matrix.arch }}
+          path: prebuilds/**
+
+  # Job B: aggregate all builds and commit to repo
+  aggregate:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code with write access
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true   # enable push with GITHUB_TOKEN
+
+      # Remove existing prebuilds directory if it exists
+      - name: Clean prebuilds directory
+        run: rm -rf prebuilds
+
+      # Create prebuilds directory
+      - name: Create prebuilds directory
+        run: mkdir -p prebuilds
+
+      # Download all prebuild artifacts
+      - name: Download all prebuild artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: downloaded-artifacts/   # download to temporary directory
+
+      # Move files to the proper prebuilds directory with correct naming
+      - name: Organize prebuilds
+        run: |
+          echo "Listing downloaded artifacts:"
+          find downloaded-artifacts -type f -ls
+          echo "Moving files to prebuilds directory with proper platform-arch structure:"
+
+          # Process each artifact directory individually
+          for artifact_dir in downloaded-artifacts/prebuilds-*; do
+            if [ ! -d "$artifact_dir" ]; then
+              echo "Skipping non-directory: $artifact_dir"
+              continue
+            fi
+
+            os_arch=$(basename "$artifact_dir" | sed 's/prebuilds-//')
+            echo "Processing artifact: $os_arch"
+
+            # Convert OS names to prebuildify platform names
+            case "$os_arch" in
+              ubuntu-latest-x64) platform_arch="linux-x64" ;;
+              ubuntu-latest-arm64) platform_arch="linux-arm64" ;;
+              ubuntu-latest-armv7) platform_arch="linux-arm" ;;
+              windows-2022-x64) platform_arch="win32-x64" ;;
+              windows-2022-arm64) platform_arch="win32-arm64" ;;
+              macos-13-x64) platform_arch="darwin-x64" ;;
+              macos-latest-arm64) platform_arch="darwin-arm64" ;;
+              *) echo "Unknown platform: $os_arch, skipping"; continue ;;
+            esac
+
+            echo "Mapping $os_arch -> $platform_arch"
+
+            mkdir -p "prebuilds/$platform_arch"
+            
+            # Only copy the .node file that matches the expected platform-arch
+            expected_path="$artifact_dir/$platform_arch/text-similarity-node.node"
+            if [ -f "$expected_path" ]; then
+              echo "Found expected file: $expected_path"
+              cp "$expected_path" "prebuilds/$platform_arch/"
+              
+              # Show file info for verification
+              echo "File info:"
+              file "prebuilds/$platform_arch/text-similarity-node.node"
+              ls -la "prebuilds/$platform_arch/text-similarity-node.node"
+            else
+              echo "Expected file not found: $expected_path"
+              echo "Available files in $artifact_dir:"
+              find "$artifact_dir" -name "*.node" -type f
+            fi
+          done
+
+          echo "Final prebuilds directory content:"
+          find prebuilds -type f -ls
+
+      # Check if there are files to commit
+      - name: Check for files to commit
+        id: check-files
+        run: |
+          if [ -n "$(find prebuilds -type f 2>/dev/null)" ]; then
+            echo "files_exist=true" >> $GITHUB_OUTPUT
+            echo "Found files to commit in prebuilds directory"
+          else
+            echo "files_exist=false" >> $GITHUB_OUTPUT
+            echo "No files found in prebuilds directory"
+          fi
+
+      - name: Commit & push prebuilds
+        if: steps.check-files.outputs.files_exist == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f prebuilds/                     # force-add prebuilds directory
+          git commit -m "chore: add all prebuilds (run ${{ github.run_id }})"
+          
+          # Handle both branch and tag scenarios
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            # If triggered by a tag, push to main branch
+            echo "Triggered by tag, pushing to main branch"
+            git push origin HEAD:main
+          else
+            # If triggered by a branch, push to the same branch
+            echo "Triggered by branch, pushing to current branch"
+            git push
+          fi
