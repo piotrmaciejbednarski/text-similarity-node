@@ -1,0 +1,28 @@
+version = 1
+
+[[analyzers]]
+name = "python"
+
+  [analyzers.meta]
+  runtime_version = "3.x.x"
+
+[[analyzers]]
+name = "javascript"
+
+  [analyzers.meta]
+  environment = [
+    "nodejs",
+    "jest"
+  ]
+
+[[analyzers]]
+name = "cxx"
+
+[[transformers]]
+name = "clang-format"
+
+[[transformers]]
+name = "prettier"
+
+[[transformers]]
+name = "ruff"
