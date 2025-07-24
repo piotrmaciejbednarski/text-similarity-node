@@ -1,6 +1,6 @@
 /**
- * text-similarity-node - Advanced Unicode-aware text similarity library
- * Modern C++17/20 implementation with 13+ algorithms, SIMD optimizations, and Promise/async support
+ * text-similarity-node
+ * High-performance and memory efficient native C++ text similarity algorithms for Node.js 
  *
  * @version 1.0.0
  * @author Piotr Bednarski <piotr.maciej.bednarski@gmail.com>

@@ -1,7 +1,7 @@
 {
   "name": "text-similarity-node",
   "version": "1.0.0",
-  "description": "Advanced Unicode-aware text similarity library with 13+ algorithms, modern C++17/20 implementation, SIMD optimizations, and comprehensive Promise/async support",
+  "description": "High-performance and memory efficient native C++ text similarity algorithms for Node.js ",
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {

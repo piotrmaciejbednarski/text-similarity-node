@@ -1,6 +1,5 @@
 /**
- * High-performance text similarity library for Node.js
- * Provides advanced Unicode-aware text comparison algorithms with modern C++17/20 implementation
+ *  High-performance and memory efficient native C++ text similarity algorithms for Node.js 
  *
  * @version 1.0.0
  * @author Piotr Bednarski <piotr.maciej.bednarski@gmail.com>
