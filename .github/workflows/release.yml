@@ -68,16 +68,16 @@ jobs:
           LAST_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
           
           if [ -n "$LAST_TAG" ]; then
-            echo "## Changes since $LAST_TAG" > notes.md
-            git log $LAST_TAG..HEAD --pretty=format:"- %s" >> notes.md
+            NOTES="## Changes since $LAST_TAG"$'\n'$(git log $LAST_TAG..HEAD --pretty=format:"- %s")
           else
-            echo "## Initial Release" > notes.md
-            echo "High-performance text similarity algorithms for Node.js" >> notes.md
+            NOTES="## Initial Release"$'\n'"High-performance text similarity algorithms for Node.js"
           fi
           
-          echo 'notes<<EOF' >> $GITHUB_OUTPUT
-          cat notes.md >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
+          {
+            echo "notes<<EOF"
+            echo "$NOTES"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Create release
         uses: softprops/action-gh-release@v1
