@@ -1,6 +1,6 @@
 {
   "name": "text-similarity-node",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "High-performance and memory efficient native C++ text similarity algorithms for Node.js ",
   "main": "index.js",
   "types": "index.d.ts",
