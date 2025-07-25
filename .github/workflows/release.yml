@@ -75,11 +75,9 @@ jobs:
             echo "High-performance text similarity algorithms for Node.js" >> notes.md
           fi
           
-          {
-            echo 'notes<<EOF'
-            cat notes.md
-            echo 'EOF'
-          } >> $GITHUB_OUTPUT
+          echo 'notes<<EOF' >> $GITHUB_OUTPUT
+          cat notes.md >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
 
       - name: Create release
         uses: softprops/action-gh-release@v1
