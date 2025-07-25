@@ -75,16 +75,16 @@ jobs:
             echo "High-performance text similarity algorithms for Node.js" >> notes.md
           fi
           
-          echo "notes<<EOF" >> $GITHUB_OUTPUT
-          cat notes.md >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          {
+            echo 'notes<<EOF'
+            cat notes.md
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
 
       - name: Create release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: v${{ github.event.inputs.version }}
-          release_name: v${{ github.event.inputs.version }}
+          name: v${{ github.event.inputs.version }}
           body: ${{ steps.notes.outputs.notes }}
           prerelease: ${{ github.event.inputs.prerelease }}
