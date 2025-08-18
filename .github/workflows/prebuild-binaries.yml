@@ -32,7 +32,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Enable ccache
         uses: hendrikmuhs/ccache-action@v1
@@ -118,7 +118,7 @@ jobs:
 
     steps:
       - name: Checkout code with write access
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           persist-credentials: true   # enable push with GITHUB_TOKEN
 
