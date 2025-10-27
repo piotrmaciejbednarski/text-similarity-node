@@ -106,7 +106,7 @@ jobs:
           find prebuilds -name "*.node" -exec file {} \;
 
       - name: Upload prebuild artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: prebuilds-${{ matrix.os }}-${{ matrix.arch }}
           path: prebuilds/**
