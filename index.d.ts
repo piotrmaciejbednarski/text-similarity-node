@@ -101,6 +101,10 @@ declare module 'text-similarity-node' {
 
     /** Maximum prefix length for Jaro-Winkler (default: 4) */
     prefixLength?: number;
+
+    /** Maximum allowed input string length in bytes (default: 100000 = ~100KB).
+     * Increase this when comparing large documents. */
+    maxStringLength?: number;
   }
 
   /**

@@ -216,6 +216,18 @@ const overrideGlobal = textSimilarity.calculateSimilarity(
   { caseSensitivity: textSimilarity.CaseSensitivity.SENSITIVE }
 );
 console.log(overrideGlobal); // { success: true, value: 0.82 }
+
+// Increase max string length for large document comparison (default: 100KB)
+textSimilarity.setGlobalConfiguration({
+  maxStringLength: 5 * 1024 * 1024 // Allow up to 5MB strings
+});
+
+const docResult = textSimilarity.calculateSimilarity(
+  largeDocument1,
+  largeDocument2,
+  textSimilarity.AlgorithmType.EUCLIDEAN,
+  { preprocessing: textSimilarity.PreprocessingMode.WORD }
+);
 ```
 
 #### Configuration Options
@@ -262,7 +274,8 @@ const fullConfig = {
   alpha: 0.5,                      // Tversky alpha parameter
   beta: 0.5,                       // Tversky beta parameter
   prefixWeight: 0.1,               // Jaro-Winkler prefix weight (0.0-0.25)
-  prefixLength: 4                  // Jaro-Winkler max prefix length
+  prefixLength: 4,                 // Jaro-Winkler max prefix length
+  maxStringLength: 100000          // Max input string length in bytes (default: 100000 ≈ 100KB)
 };
 ```
 

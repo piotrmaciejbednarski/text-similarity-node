@@ -559,10 +559,20 @@ void SimilarityEngine::cleanup_cache() const {
 
 bool SimilarityEngine::validate_input(const std::string &s1,
                                       const std::string &s2) const noexcept {
-  // Basic validation - strings shouldn't be too large
-  constexpr size_t MAX_STRING_LENGTH = 100000; // 100KB limit
+  // Use configured max string length, defaulting to 100KB
+  constexpr size_t DEFAULT_MAX_STRING_LENGTH = 100000; // 100KB limit
 
-  return s1.length() <= MAX_STRING_LENGTH && s2.length() <= MAX_STRING_LENGTH;
+  size_t max_length = DEFAULT_MAX_STRING_LENGTH;
+  try {
+    auto global_config = config_manager_->get_global_config();
+    if (global_config.max_string_length.has_value()) {
+      max_length = *global_config.max_string_length;
+    }
+  } catch (...) {
+    // Fall back to default on any error
+  }
+
+  return s1.length() <= max_length && s2.length() <= max_length;
 }
 
 Core::SimilarityResult

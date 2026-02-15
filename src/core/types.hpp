@@ -57,6 +57,7 @@ struct AlgorithmConfig {
   std::optional<double> beta{};            // Tversky beta
   std::optional<double> prefix_weight{};   // Jaro-Winkler prefix weight
   std::optional<uint32_t> prefix_length{}; // Jaro-Winkler prefix length
+  std::optional<size_t> max_string_length{}; // Max input string length (bytes)
 };
 
 // Result types with comprehensive error handling

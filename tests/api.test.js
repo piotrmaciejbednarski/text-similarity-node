@@ -200,6 +200,46 @@ describe('text-similarity-node', () => {
       expect(result.success).toBe(true);
       expect(result.value).toBeCloseTo(1.0, 2);
     });
+
+    test('maxStringLength - default rejects strings over 100KB', () => {
+      const overLimit = 'a'.repeat(100001);
+      const result = calculateSimilarity(overLimit, 'hello', AlgorithmType.LEVENSHTEIN);
+
+      expect(result.success).toBe(false);
+    });
+
+    test('maxStringLength - can be increased via global config', () => {
+      setGlobalConfiguration({
+        maxStringLength: 200000,
+      });
+
+      const largeString = 'a'.repeat(150000);
+      const result = calculateSimilarity(largeString, largeString, AlgorithmType.LEVENSHTEIN);
+
+      expect(result.success).toBe(true);
+      expect(result.value).toBeCloseTo(1.0, 2);
+    });
+
+    test('maxStringLength - can be retrieved from global config', () => {
+      setGlobalConfiguration({
+        maxStringLength: 500000,
+      });
+
+      const config = getGlobalConfiguration();
+      expect(config.maxStringLength).toBe(500000);
+    });
+
+    test('maxStringLength - rejects strings over custom limit', () => {
+      setGlobalConfiguration({
+        maxStringLength: 50,
+      });
+
+      const result = calculateSimilarity('a'.repeat(51), 'hello', AlgorithmType.LEVENSHTEIN);
+      expect(result.success).toBe(false);
+
+      const result2 = calculateSimilarity('hello', 'world', AlgorithmType.LEVENSHTEIN);
+      expect(result2.success).toBe(true);
+    });
   });
 
   describe('Unicode Support', () => {

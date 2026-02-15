@@ -589,6 +589,12 @@ TextSimilarityAddon::ExtractConfig(const Napi::Object &config_obj) {
         config_obj.Get("prefixLength").As<Napi::Number>().Uint32Value();
   }
 
+  if (config_obj.Has("maxStringLength") &&
+      config_obj.Get("maxStringLength").IsNumber()) {
+    config.max_string_length = static_cast<size_t>(
+        config_obj.Get("maxStringLength").As<Napi::Number>().Int64Value());
+  }
+
   return config;
 }
 
@@ -623,6 +629,11 @@ TextSimilarityAddon::ConfigToObject(Napi::Env env,
 
   if (config.prefix_length.has_value()) {
     obj.Set("prefixLength", Napi::Number::New(env, *config.prefix_length));
+  }
+
+  if (config.max_string_length.has_value()) {
+    obj.Set("maxStringLength",
+            Napi::Number::New(env, static_cast<double>(*config.max_string_length)));
   }
 
   return obj;
