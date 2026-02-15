@@ -1,7 +1,7 @@
 /**
  *  High-performance and memory efficient native C++ text similarity algorithms for Node.js
  *
- * @version 1.0.1
+ * @version 1.1.0
  * @author Piotr Bednarski <piotr.maciej.bednarski@gmail.com>
  * @license MIT
  */
