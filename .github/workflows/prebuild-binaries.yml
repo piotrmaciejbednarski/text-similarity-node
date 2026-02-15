@@ -25,8 +25,6 @@ jobs:
           - os: windows-2022
             arch: arm64
           # macOS runners
-          - os: macos-13
-            arch: x64
           - os: macos-latest
             arch: arm64
 
@@ -160,7 +158,6 @@ jobs:
               ubuntu-latest-armv7) platform_arch="linux-arm" ;;
               windows-2022-x64) platform_arch="win32-x64" ;;
               windows-2022-arm64) platform_arch="win32-arm64" ;;
-              macos-13-x64) platform_arch="darwin-x64" ;;
               macos-latest-arm64) platform_arch="darwin-arm64" ;;
               *) echo "Unknown platform: $os_arch, skipping"; continue ;;
             esac
