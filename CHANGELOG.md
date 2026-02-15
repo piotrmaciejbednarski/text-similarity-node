@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - CLI Support
+
+### Added
+
+- Command-line interface (CLI) via `text-similarity` command using `commander`.
+- `similarity` command to calculate similarity scores directly from the terminal.
+- `distance` command to calculate string distances from the terminal.
+- `batch` command to process multiple string pairs from a JSON file.
+- `algorithms` command to list all available algorithms with descriptions.
+- Support for all algorithm options via CLI flags (`--algorithm`, `--preprocessing`, `--ignore-case`, `--ngram-size`, `--threshold`, `--alpha`, `--beta`, `--prefix-weight`).
+- JSON and plain text output formats (`--format`).
+- `bin/` entry point registered in `package.json` for global installation.
+
 ## [1.0.0] - Initial Release
 
 This is the first release of the `text-similarity-node` library, which provides high-performance text similarity algorithms in Node.js.

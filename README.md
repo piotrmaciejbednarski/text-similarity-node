@@ -45,6 +45,84 @@ Before installing, ensure you have the necessary build tools installed on your s
 npm install text-similarity-node
 ```
 
+## CLI Usage
+
+After installing globally, you can use the `text-similarity` command directly from your terminal:
+
+```bash
+npm install -g text-similarity-node
+```
+
+### Similarity
+
+Calculate a similarity score (0–1) between two strings:
+
+```bash
+# Default (Levenshtein)
+text-similarity similarity "hello" "hallo"
+# 0.8
+
+# Choose a different algorithm
+text-similarity similarity "hello" "hallo" -a jaro-winkler
+# 0.88
+
+# Case-insensitive comparison
+text-similarity similarity "Hello" "hello" -i
+# 1
+
+# JSON output
+text-similarity similarity "hello" "hallo" -a cosine -f json
+# { "success": true, "value": 0.5 }
+```
+
+### Distance
+
+Calculate the distance between two strings:
+
+```bash
+text-similarity distance "kitten" "sitting"
+# 3
+
+text-similarity distance "hello" "hallo" -a hamming
+# 1
+```
+
+### Batch Processing
+
+Process multiple string pairs from a JSON file:
+
+```bash
+# pairs.json: [["hello","hallo"],["world","word"],["test","best"]]
+text-similarity batch pairs.json -a levenshtein
+# "hello" <-> "hallo"  =>  0.8
+# "world" <-> "word"   =>  0.8
+# "test"  <-> "best"   =>  0.75
+
+text-similarity batch pairs.json -a jaccard -f json
+```
+
+### List Algorithms
+
+```bash
+text-similarity algorithms
+```
+
+### All CLI Options
+
+| Option | Description |
+|---|---|
+| `-a, --algorithm <name>` | Algorithm to use (default: `levenshtein`) |
+| `-p, --preprocessing <mode>` | Preprocessing: `none`, `character`, `word`, `ngram` |
+| `-i, --ignore-case` | Case-insensitive comparison |
+| `-n, --ngram-size <size>` | N-gram size (default: `2`) |
+| `--threshold <value>` | Early termination threshold |
+| `--alpha <value>` | Alpha weight for Tversky index |
+| `--beta <value>` | Beta weight for Tversky index |
+| `--prefix-weight <value>` | Prefix weight for Jaro-Winkler (0.0–0.25) |
+| `-f, --format <type>` | Output format: `plain` (default), `json` |
+| `-v, --version` | Show version |
+| `-h, --help` | Show help |
+
 ## Quick Start
 
 ```javascript
