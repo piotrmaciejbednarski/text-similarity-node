@@ -6,7 +6,7 @@
  * @license MIT
  */
 
-declare module 'text-similarity-node' {
+declare module "text-similarity-node" {
   // ============================================================================
   // ENUMS AND CONSTANTS
   // ============================================================================
@@ -101,6 +101,10 @@ declare module 'text-similarity-node' {
 
     /** Maximum prefix length for Jaro-Winkler (default: 4) */
     prefixLength?: number;
+
+    /** Maximum allowed input string length in bytes (default: 100000 = ~100KB).
+     * Increase this when comparing large documents. */
+    maxStringLength?: number;
   }
 
   /**
@@ -169,7 +173,7 @@ declare module 'text-similarity-node' {
     s1: string,
     s2: string,
     algorithm?: AlgorithmType | string,
-    config?: AlgorithmConfig
+    config?: AlgorithmConfig,
   ): SimilarityResult;
 
   /**
@@ -195,7 +199,7 @@ declare module 'text-similarity-node' {
     s1: string,
     s2: string,
     algorithm?: AlgorithmType | string,
-    config?: AlgorithmConfig
+    config?: AlgorithmConfig,
   ): DistanceResult;
 
   /**
@@ -227,7 +231,7 @@ declare module 'text-similarity-node' {
   export function calculateSimilarityBatch(
     pairs: [string, string][],
     algorithm?: AlgorithmType | string,
-    config?: AlgorithmConfig
+    config?: AlgorithmConfig,
   ): SimilarityResult[];
 
   // ============================================================================
@@ -255,7 +259,7 @@ declare module 'text-similarity-node' {
     s1: string,
     s2: string,
     algorithm?: AlgorithmType | string,
-    config?: AlgorithmConfig
+    config?: AlgorithmConfig,
   ): Promise<number>;
 
   /**
@@ -279,7 +283,7 @@ declare module 'text-similarity-node' {
     s1: string,
     s2: string,
     algorithm?: AlgorithmType | string,
-    config?: AlgorithmConfig
+    config?: AlgorithmConfig,
   ): Promise<number>;
 
   /**
@@ -309,7 +313,7 @@ declare module 'text-similarity-node' {
   export function calculateSimilarityBatchAsync(
     pairs: [string, string][],
     algorithm?: AlgorithmType | string,
-    config?: AlgorithmConfig
+    config?: AlgorithmConfig,
   ): Promise<number[]>;
 
   // ============================================================================
@@ -394,12 +398,20 @@ declare module 'text-similarity-node' {
     /**
      * Levenshtein similarity (normalized edit distance)
      */
-    function levenshtein(s1: string, s2: string, caseSensitive?: boolean): number;
+    function levenshtein(
+      s1: string,
+      s2: string,
+      caseSensitive?: boolean,
+    ): number;
 
     /**
      * Damerau-Levenshtein similarity with transposition support
      */
-    function damerauLevenshtein(s1: string, s2: string, caseSensitive?: boolean): number;
+    function damerauLevenshtein(
+      s1: string,
+      s2: string,
+      caseSensitive?: boolean,
+    ): number;
 
     /**
      * Hamming similarity for equal-length strings
@@ -418,7 +430,7 @@ declare module 'text-similarity-node' {
       s1: string,
       s2: string,
       caseSensitive?: boolean,
-      prefixWeight?: number
+      prefixWeight?: number,
     ): number;
 
     /**
@@ -429,7 +441,7 @@ declare module 'text-similarity-node' {
       s2: string,
       useWords?: boolean,
       caseSensitive?: boolean,
-      ngramSize?: number
+      ngramSize?: number,
     ): number;
 
     /**
@@ -440,7 +452,7 @@ declare module 'text-similarity-node' {
       s2: string,
       useWords?: boolean,
       caseSensitive?: boolean,
-      ngramSize?: number
+      ngramSize?: number,
     ): number;
 
     /**
@@ -451,7 +463,7 @@ declare module 'text-similarity-node' {
       s2: string,
       useWords?: boolean,
       caseSensitive?: boolean,
-      ngramSize?: number
+      ngramSize?: number,
     ): number;
 
     /**
@@ -464,7 +476,7 @@ declare module 'text-similarity-node' {
       beta: number,
       useWords?: boolean,
       caseSensitive?: boolean,
-      ngramSize?: number
+      ngramSize?: number,
     ): number;
   }
 
@@ -475,12 +487,20 @@ declare module 'text-similarity-node' {
     /**
      * Levenshtein edit distance
      */
-    function levenshtein(s1: string, s2: string, caseSensitive?: boolean): number;
+    function levenshtein(
+      s1: string,
+      s2: string,
+      caseSensitive?: boolean,
+    ): number;
 
     /**
      * Damerau-Levenshtein distance with transposition support
      */
-    function damerauLevenshtein(s1: string, s2: string, caseSensitive?: boolean): number;
+    function damerauLevenshtein(
+      s1: string,
+      s2: string,
+      caseSensitive?: boolean,
+    ): number;
 
     /**
      * Hamming distance for equal-length strings
@@ -500,7 +520,7 @@ declare module 'text-similarity-node' {
       s2: string,
       useWords?: boolean,
       caseSensitive?: boolean,
-      ngramSize?: number
+      ngramSize?: number,
     ): number;
 
     /**
@@ -511,7 +531,7 @@ declare module 'text-similarity-node' {
       s2: string,
       useWords?: boolean,
       caseSensitive?: boolean,
-      ngramSize?: number
+      ngramSize?: number,
     ): number;
 
     /**
@@ -522,7 +542,7 @@ declare module 'text-similarity-node' {
       s2: string,
       useWords?: boolean,
       caseSensitive?: boolean,
-      ngramSize?: number
+      ngramSize?: number,
     ): number;
   }
 
@@ -533,36 +553,52 @@ declare module 'text-similarity-node' {
     /**
      * All similarity functions from the similarity namespace, but returning Promises
      */
-    function levenshtein(s1: string, s2: string, caseSensitive?: boolean): Promise<number>;
-    function damerauLevenshtein(s1: string, s2: string, caseSensitive?: boolean): Promise<number>;
-    function hamming(s1: string, s2: string, caseSensitive?: boolean): Promise<number>;
-    function jaro(s1: string, s2: string, caseSensitive?: boolean): Promise<number>;
+    function levenshtein(
+      s1: string,
+      s2: string,
+      caseSensitive?: boolean,
+    ): Promise<number>;
+    function damerauLevenshtein(
+      s1: string,
+      s2: string,
+      caseSensitive?: boolean,
+    ): Promise<number>;
+    function hamming(
+      s1: string,
+      s2: string,
+      caseSensitive?: boolean,
+    ): Promise<number>;
+    function jaro(
+      s1: string,
+      s2: string,
+      caseSensitive?: boolean,
+    ): Promise<number>;
     function jaroWinkler(
       s1: string,
       s2: string,
       caseSensitive?: boolean,
-      prefixWeight?: number
+      prefixWeight?: number,
     ): Promise<number>;
     function jaccard(
       s1: string,
       s2: string,
       useWords?: boolean,
       caseSensitive?: boolean,
-      ngramSize?: number
+      ngramSize?: number,
     ): Promise<number>;
     function dice(
       s1: string,
       s2: string,
       useWords?: boolean,
       caseSensitive?: boolean,
-      ngramSize?: number
+      ngramSize?: number,
     ): Promise<number>;
     function cosine(
       s1: string,
       s2: string,
       useWords?: boolean,
       caseSensitive?: boolean,
-      ngramSize?: number
+      ngramSize?: number,
     ): Promise<number>;
     function tversky(
       s1: string,
@@ -571,7 +607,7 @@ declare module 'text-similarity-node' {
       beta: number,
       useWords?: boolean,
       caseSensitive?: boolean,
-      ngramSize?: number
+      ngramSize?: number,
     ): Promise<number>;
   }
 
@@ -592,7 +628,7 @@ declare module 'text-similarity-node' {
     pairs: [string, string][],
     algorithm: AlgorithmType,
     config: AlgorithmConfig,
-    onProgress: (completed: number, total: number) => void
+    onProgress: (completed: number, total: number) => void,
   ): Promise<number[]>;
 
   /**
@@ -608,7 +644,7 @@ declare module 'text-similarity-node' {
     pairs: [string, string][],
     algorithm?: AlgorithmType,
     config?: AlgorithmConfig,
-    maxWorkers?: number
+    maxWorkers?: number,
   ): Promise<number[]>;
 
   // ============================================================================
