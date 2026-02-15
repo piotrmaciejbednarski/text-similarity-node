@@ -109,19 +109,19 @@ text-similarity algorithms
 
 ### All CLI Options
 
-| Option | Description |
-|---|---|
-| `-a, --algorithm <name>` | Algorithm to use (default: `levenshtein`) |
+| Option                       | Description                                         |
+| ---------------------------- | --------------------------------------------------- |
+| `-a, --algorithm <name>`     | Algorithm to use (default: `levenshtein`)           |
 | `-p, --preprocessing <mode>` | Preprocessing: `none`, `character`, `word`, `ngram` |
-| `-i, --ignore-case` | Case-insensitive comparison |
-| `-n, --ngram-size <size>` | N-gram size (default: `2`) |
-| `--threshold <value>` | Early termination threshold |
-| `--alpha <value>` | Alpha weight for Tversky index |
-| `--beta <value>` | Beta weight for Tversky index |
-| `--prefix-weight <value>` | Prefix weight for Jaro-Winkler (0.0–0.25) |
-| `-f, --format <type>` | Output format: `plain` (default), `json` |
-| `-v, --version` | Show version |
-| `-h, --help` | Show help |
+| `-i, --ignore-case`          | Case-insensitive comparison                         |
+| `-n, --ngram-size <size>`    | N-gram size (default: `2`)                          |
+| `--threshold <value>`        | Early termination threshold                         |
+| `--alpha <value>`            | Alpha weight for Tversky index                      |
+| `--beta <value>`             | Beta weight for Tversky index                       |
+| `--prefix-weight <value>`    | Prefix weight for Jaro-Winkler (0.0–0.25)           |
+| `-f, --format <type>`        | Output format: `plain` (default), `json`            |
+| `-v, --version`              | Show version                                        |
+| `-h, --help`                 | Show help                                           |
 
 ## Quick Start
 
