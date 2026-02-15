@@ -632,8 +632,9 @@ TextSimilarityAddon::ConfigToObject(Napi::Env env,
   }
 
   if (config.max_string_length.has_value()) {
-    obj.Set("maxStringLength",
-            Napi::Number::New(env, static_cast<double>(*config.max_string_length)));
+    obj.Set(
+        "maxStringLength",
+        Napi::Number::New(env, static_cast<double>(*config.max_string_length)));
   }
 
   return obj;

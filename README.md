@@ -27,13 +27,16 @@ High-performance and memory efficient native C++ text similarity algorithms for 
 Before installing, ensure you have the necessary build tools installed on your system:
 
 ### Windows
+
 - **Visual Studio 2017 or newer** (with **"Desktop development with C++"** workload installed).
 - **Python 3.x** (required by `node-gyp`).
 
 ### macOS
+
 - **Xcode Command Line Tools** (`xcode-select --install`).
 
 ### Linux
+
 - **GCC/G++** and **Python 3.x**.
 
 ## Installation
@@ -45,33 +48,33 @@ npm install text-similarity-node
 ## Quick Start
 
 ```javascript
-const textSimilarity = require('text-similarity-node');
+const textSimilarity = require("text-similarity-node");
 
 // Levenshtein Similarity (edit distance)
-textSimilarity.similarity.levenshtein('hello', 'hallo'); // 0.8
+textSimilarity.similarity.levenshtein("hello", "hallo"); // 0.8
 
 // Jaccard Similarity (set intersection)
-textSimilarity.similarity.jaccard('hello world', 'hello universe', true); // 0.33
+textSimilarity.similarity.jaccard("hello world", "hello universe", true); // 0.33
 
 // Cosine Similarity with different options
-textSimilarity.similarity.cosine('hello', 'hallo'); // 0.5 (character n-grams)
-textSimilarity.similarity.cosine('hello world', 'hello universe', true); // 0.49 (word-based)
+textSimilarity.similarity.cosine("hello", "hallo"); // 0.5 (character n-grams)
+textSimilarity.similarity.cosine("hello world", "hello universe", true); // 0.49 (word-based)
 
 // Additional algorithms
-textSimilarity.similarity.jaro('hello', 'hallo'); // 0.86
-textSimilarity.similarity.jaroWinkler('hello', 'hallo'); // 0.88
-textSimilarity.similarity.dice('hello', 'hallo'); // 0.5
+textSimilarity.similarity.jaro("hello", "hallo"); // 0.86
+textSimilarity.similarity.jaroWinkler("hello", "hallo"); // 0.88
+textSimilarity.similarity.dice("hello", "hallo"); // 0.5
 
 // Distance measurements
-textSimilarity.distance.levenshtein('hello', 'hallo'); // 1
-textSimilarity.distance.hamming('hello', 'hallo'); // 1
+textSimilarity.distance.levenshtein("hello", "hallo"); // 1
+textSimilarity.distance.hamming("hello", "hallo"); // 1
 
 // Unicode Support
-textSimilarity.similarity.levenshtein('café', 'cafe'); // 0.75
-textSimilarity.similarity.jaccard('Hello 👋 World 🌍', 'Hello 👋 World 🌎'); // 0.86 (different globe emoji)
+textSimilarity.similarity.levenshtein("café", "cafe"); // 0.75
+textSimilarity.similarity.jaccard("Hello 👋 World 🌍", "Hello 👋 World 🌎"); // 0.86 (different globe emoji)
 
 // Case-insensitive comparison
-textSimilarity.similarity.levenshtein('Hello', 'hello', false); // 1.0
+textSimilarity.similarity.levenshtein("Hello", "hello", false); // 1.0
 ```
 
 ## Algorithm Overview
@@ -85,7 +88,7 @@ The text-similarity-node library was created based on algorithm implementations 
 - **Jaro Similarity**: Optimized for short strings and proper names
 - **Jaro-Winkler**: Enhanced Jaro with prefix matching bonus
 
-### Token-Based Algorithms  
+### Token-Based Algorithms
 
 - **Jaccard Similarity**: Set intersection for document similarity
 - **Sorensen-Dice**: Harmonic mean of precision and recall
@@ -103,76 +106,76 @@ The text-similarity-node library was created based on algorithm implementations 
 The Modern API provides comprehensive configuration options and consistent return formats:
 
 ```javascript
-const textSimilarity = require('text-similarity-node');
+const textSimilarity = require("text-similarity-node");
 
 // Basic similarity calculation
-const result = textSimilarity.calculateSimilarity('hello', 'hallo');
+const result = textSimilarity.calculateSimilarity("hello", "hallo");
 console.log(result); // { success: true, value: 0.8 }
 
 // Specify algorithm type
 const result2 = textSimilarity.calculateSimilarity(
-  'hello world', 
-  'hello universe', 
-  textSimilarity.AlgorithmType.JACCARD
+  "hello world",
+  "hello universe",
+  textSimilarity.AlgorithmType.JACCARD,
 );
 console.log(result2); // { success: true, value: 0.39 }
 
 // Full configuration example
 const result3 = textSimilarity.calculateSimilarity(
-  'hello world',
-  'world hello',
+  "hello world",
+  "world hello",
   textSimilarity.AlgorithmType.COSINE,
   {
     preprocessing: textSimilarity.PreprocessingMode.WORD,
     caseSensitivity: textSimilarity.CaseSensitivity.INSENSITIVE,
-    ngramSize: 2
-  }
+    ngramSize: 2,
+  },
 );
 console.log(result3); // { success: true, value: 1.0 }
 
 // Advanced algorithm-specific configuration
 const jaroWinklerResult = textSimilarity.calculateSimilarity(
-  'martha',
-  'marhta',
+  "martha",
+  "marhta",
   textSimilarity.AlgorithmType.JARO_WINKLER,
   {
     prefixWeight: 0.1,
     prefixLength: 4,
-    caseSensitivity: textSimilarity.CaseSensitivity.INSENSITIVE
-  }
+    caseSensitivity: textSimilarity.CaseSensitivity.INSENSITIVE,
+  },
 );
 
 // Tversky similarity with custom weights
 const tverskyResult = textSimilarity.calculateSimilarity(
-  'information retrieval',
-  'information extraction',
+  "information retrieval",
+  "information extraction",
   textSimilarity.AlgorithmType.TVERSKY,
   {
     preprocessing: textSimilarity.PreprocessingMode.WORD,
-    alpha: 0.8,  // Weight for first string
-    beta: 0.2,   // Weight for second string
-    caseSensitivity: textSimilarity.CaseSensitivity.INSENSITIVE
-  }
+    alpha: 0.8, // Weight for first string
+    beta: 0.2, // Weight for second string
+    caseSensitivity: textSimilarity.CaseSensitivity.INSENSITIVE,
+  },
 );
 
 // Distance calculations
 const distance = textSimilarity.calculateDistance(
-  'kitten',
-  'sitting',
-  textSimilarity.AlgorithmType.LEVENSHTEIN
+  "kitten",
+  "sitting",
+  textSimilarity.AlgorithmType.LEVENSHTEIN,
 );
 console.log(distance); // { success: true, value: 3 }
 
 // Batch processing
 const pairs = [
-  ['hello', 'hallo'],
-  ['world', 'word'],
-  ['test', 'best']
+  ["hello", "hallo"],
+  ["world", "word"],
+  ["test", "best"],
 ];
 const batchResults = textSimilarity.calculateSimilarityBatch(
   pairs,
   textSimilarity.AlgorithmType.LEVENSHTEIN,
-  { caseSensitivity: textSimilarity.CaseSensitivity.INSENSITIVE }
+  { caseSensitivity: textSimilarity.CaseSensitivity.INSENSITIVE },
 );
 console.log(batchResults);
 // [{ success: true, value: 0.8 }, { success: true, value: 0.8 }, { success: true, value: 0.75 }]
@@ -180,19 +183,19 @@ console.log(batchResults);
 // Asynchronous API
 async function example() {
   const similarity = await textSimilarity.calculateSimilarityAsync(
-    'hello world',
-    'hello universe',
+    "hello world",
+    "hello universe",
     textSimilarity.AlgorithmType.COSINE,
     {
       preprocessing: textSimilarity.PreprocessingMode.WORD,
-      caseSensitivity: textSimilarity.CaseSensitivity.INSENSITIVE
-    }
+      caseSensitivity: textSimilarity.CaseSensitivity.INSENSITIVE,
+    },
   );
   console.log(similarity); // 0.5
-  
+
   const batchAsync = await textSimilarity.calculateSimilarityBatchAsync(
     pairs,
-    textSimilarity.AlgorithmType.JACCARD
+    textSimilarity.AlgorithmType.JACCARD,
   );
   console.log(batchAsync); // [0.67, 0.8, 0.6]
 }
@@ -201,32 +204,35 @@ async function example() {
 textSimilarity.setGlobalConfiguration({
   preprocessing: textSimilarity.PreprocessingMode.WORD,
   caseSensitivity: textSimilarity.CaseSensitivity.INSENSITIVE,
-  ngramSize: 3
+  ngramSize: 3,
 });
 
 // All subsequent calls will use global config unless overridden
-const withGlobalConfig = textSimilarity.calculateSimilarity('Hello World', 'hello world');
+const withGlobalConfig = textSimilarity.calculateSimilarity(
+  "Hello World",
+  "hello world",
+);
 console.log(withGlobalConfig); // { success: true, value: 1.0 }
 
 // Override global config for specific call
 const overrideGlobal = textSimilarity.calculateSimilarity(
-  'Hello World',
-  'hello world',
+  "Hello World",
+  "hello world",
   textSimilarity.AlgorithmType.LEVENSHTEIN,
-  { caseSensitivity: textSimilarity.CaseSensitivity.SENSITIVE }
+  { caseSensitivity: textSimilarity.CaseSensitivity.SENSITIVE },
 );
 console.log(overrideGlobal); // { success: true, value: 0.82 }
 
 // Increase max string length for large document comparison (default: 100KB)
 textSimilarity.setGlobalConfiguration({
-  maxStringLength: 5 * 1024 * 1024 // Allow up to 5MB strings
+  maxStringLength: 5 * 1024 * 1024, // Allow up to 5MB strings
 });
 
 const docResult = textSimilarity.calculateSimilarity(
   largeDocument1,
   largeDocument2,
   textSimilarity.AlgorithmType.EUCLIDEAN,
-  { preprocessing: textSimilarity.PreprocessingMode.WORD }
+  { preprocessing: textSimilarity.PreprocessingMode.WORD },
 );
 ```
 
@@ -235,47 +241,47 @@ const docResult = textSimilarity.calculateSimilarity(
 ```javascript
 // Available algorithm types
 textSimilarity.AlgorithmType = {
-  LEVENSHTEIN: 0,           // Edit distance
-  DAMERAU_LEVENSHTEIN: 1,   // Edit distance with transpositions
-  HAMMING: 2,               // Equal-length string distance
-  JARO: 3,                  // Fuzzy string matching
-  JARO_WINKLER: 4,          // Jaro with prefix weighting
-  JACCARD: 5,               // Set similarity coefficient
-  SORENSEN_DICE: 6,         // Dice coefficient
-  OVERLAP: 7,               // Overlap coefficient  
-  TVERSKY: 8,               // Asymmetric similarity with weights
-  COSINE: 9,                // Vector space cosine similarity
-  EUCLIDEAN: 10,            // Euclidean distance
-  MANHATTAN: 11,            // Manhattan distance
-  CHEBYSHEV: 12             // Chebyshev distance
+  LEVENSHTEIN: 0, // Edit distance
+  DAMERAU_LEVENSHTEIN: 1, // Edit distance with transpositions
+  HAMMING: 2, // Equal-length string distance
+  JARO: 3, // Fuzzy string matching
+  JARO_WINKLER: 4, // Jaro with prefix weighting
+  JACCARD: 5, // Set similarity coefficient
+  SORENSEN_DICE: 6, // Dice coefficient
+  OVERLAP: 7, // Overlap coefficient
+  TVERSKY: 8, // Asymmetric similarity with weights
+  COSINE: 9, // Vector space cosine similarity
+  EUCLIDEAN: 10, // Euclidean distance
+  MANHATTAN: 11, // Manhattan distance
+  CHEBYSHEV: 12, // Chebyshev distance
 };
 
 // Preprocessing modes
 textSimilarity.PreprocessingMode = {
-  NONE: 0,        // No preprocessing
-  CHARACTER: 1,   // Character-level comparison
-  WORD: 2,        // Word-level tokenization
-  NGRAM: 3        // N-gram based tokenization
+  NONE: 0, // No preprocessing
+  CHARACTER: 1, // Character-level comparison
+  WORD: 2, // Word-level tokenization
+  NGRAM: 3, // N-gram based tokenization
 };
 
 // Case sensitivity options
 textSimilarity.CaseSensitivity = {
-  SENSITIVE: 0,   // Case-sensitive comparison
-  INSENSITIVE: 1  // Case-insensitive with Unicode support
+  SENSITIVE: 0, // Case-sensitive comparison
+  INSENSITIVE: 1, // Case-insensitive with Unicode support
 };
 
 // Full configuration object structure
 const fullConfig = {
-  algorithm: textSimilarity.AlgorithmType.COSINE,          // Algorithm to use
-  preprocessing: textSimilarity.PreprocessingMode.WORD,    // Text processing mode
+  algorithm: textSimilarity.AlgorithmType.COSINE, // Algorithm to use
+  preprocessing: textSimilarity.PreprocessingMode.WORD, // Text processing mode
   caseSensitivity: textSimilarity.CaseSensitivity.INSENSITIVE, // Case handling
-  ngramSize: 2,                    // N-gram size (default: 2)
-  threshold: 0.5,                  // Early termination threshold
-  alpha: 0.5,                      // Tversky alpha parameter
-  beta: 0.5,                       // Tversky beta parameter
-  prefixWeight: 0.1,               // Jaro-Winkler prefix weight (0.0-0.25)
-  prefixLength: 4,                 // Jaro-Winkler max prefix length
-  maxStringLength: 100000          // Max input string length in bytes (default: 100000 ≈ 100KB)
+  ngramSize: 2, // N-gram size (default: 2)
+  threshold: 0.5, // Early termination threshold
+  alpha: 0.5, // Tversky alpha parameter
+  beta: 0.5, // Tversky beta parameter
+  prefixWeight: 0.1, // Jaro-Winkler prefix weight (0.0-0.25)
+  prefixLength: 4, // Jaro-Winkler max prefix length
+  maxStringLength: 100000, // Max input string length in bytes (default: 100000 ≈ 100KB)
 };
 ```
 
@@ -304,30 +310,79 @@ console.log(currentConfig);
 
 ```javascript
 // Edit-based algorithms
-textSimilarity.similarity.levenshtein(s1, s2, caseSensitive = true)
-textSimilarity.similarity.damerauLevenshtein(s1, s2, caseSensitive = true)
-textSimilarity.similarity.hamming(s1, s2, caseSensitive = true)
+textSimilarity.similarity.levenshtein(s1, s2, (caseSensitive = true));
+textSimilarity.similarity.damerauLevenshtein(s1, s2, (caseSensitive = true));
+textSimilarity.similarity.hamming(s1, s2, (caseSensitive = true));
 
 // Phonetic algorithms
-textSimilarity.similarity.jaro(s1, s2, caseSensitive = true)
-textSimilarity.similarity.jaroWinkler(s1, s2, caseSensitive = true, prefixWeight = 0.1)
+textSimilarity.similarity.jaro(s1, s2, (caseSensitive = true));
+textSimilarity.similarity.jaroWinkler(
+  s1,
+  s2,
+  (caseSensitive = true),
+  (prefixWeight = 0.1),
+);
 
 // Token-based algorithms
-textSimilarity.similarity.jaccard(s1, s2, useWords = false, caseSensitive = true, ngramSize = 2)
-textSimilarity.similarity.dice(s1, s2, useWords = false, caseSensitive = true, ngramSize = 2)
-textSimilarity.similarity.cosine(s1, s2, useWords = false, caseSensitive = true, ngramSize = 2)
-textSimilarity.similarity.tversky(s1, s2, alpha, beta, useWords = false, caseSensitive = true, ngramSize = 2)
+textSimilarity.similarity.jaccard(
+  s1,
+  s2,
+  (useWords = false),
+  (caseSensitive = true),
+  (ngramSize = 2),
+);
+textSimilarity.similarity.dice(
+  s1,
+  s2,
+  (useWords = false),
+  (caseSensitive = true),
+  (ngramSize = 2),
+);
+textSimilarity.similarity.cosine(
+  s1,
+  s2,
+  (useWords = false),
+  (caseSensitive = true),
+  (ngramSize = 2),
+);
+textSimilarity.similarity.tversky(
+  s1,
+  s2,
+  alpha,
+  beta,
+  (useWords = false),
+  (caseSensitive = true),
+  (ngramSize = 2),
+);
 ```
 
 #### Distance Functions
 
 ```javascript
-textSimilarity.distance.levenshtein(s1, s2, caseSensitive = true)
-textSimilarity.distance.damerauLevenshtein(s1, s2, caseSensitive = true)
-textSimilarity.distance.hamming(s1, s2, caseSensitive = true)
-textSimilarity.distance.euclidean(s1, s2, useWords = false, caseSensitive = true, ngramSize = 2)
-textSimilarity.distance.manhattan(s1, s2, useWords = false, caseSensitive = true, ngramSize = 2)
-textSimilarity.distance.chebyshev(s1, s2, useWords = false, caseSensitive = true, ngramSize = 2)
+textSimilarity.distance.levenshtein(s1, s2, (caseSensitive = true));
+textSimilarity.distance.damerauLevenshtein(s1, s2, (caseSensitive = true));
+textSimilarity.distance.hamming(s1, s2, (caseSensitive = true));
+textSimilarity.distance.euclidean(
+  s1,
+  s2,
+  (useWords = false),
+  (caseSensitive = true),
+  (ngramSize = 2),
+);
+textSimilarity.distance.manhattan(
+  s1,
+  s2,
+  (useWords = false),
+  (caseSensitive = true),
+  (ngramSize = 2),
+);
+textSimilarity.distance.chebyshev(
+  s1,
+  s2,
+  (useWords = false),
+  (caseSensitive = true),
+  (ngramSize = 2),
+);
 ```
 
 ### Asynchronous API
@@ -336,50 +391,50 @@ All algorithms support async execution with worker threads:
 
 ```javascript
 // All similarity algorithms available in async form
-await textSimilarity.async.levenshtein(s1, s2, caseSensitive)
-await textSimilarity.async.jaccard(s1, s2, useWords, caseSensitive, ngramSize)
-await textSimilarity.async.cosine(s1, s2, useWords, caseSensitive, ngramSize)
-await textSimilarity.async.jaro(s1, s2, caseSensitive)
-await textSimilarity.async.jaroWinkler(s1, s2, caseSensitive, prefixWeight)
+await textSimilarity.async.levenshtein(s1, s2, caseSensitive);
+await textSimilarity.async.jaccard(s1, s2, useWords, caseSensitive, ngramSize);
+await textSimilarity.async.cosine(s1, s2, useWords, caseSensitive, ngramSize);
+await textSimilarity.async.jaro(s1, s2, caseSensitive);
+await textSimilarity.async.jaroWinkler(s1, s2, caseSensitive, prefixWeight);
 // ... and more
 ```
 
 ## Library Comparison
 
-| Algorithm Category         | text-similarity-node | string-comparison | similarity |
-|---------------------------|----------------------|-------------------|---------------|
-| **Edit-Based Algorithms** |                      |                   |               |
-| Levenshtein Distance      | ✅                   | ✅                | ❌            |
-| Levenshtein Similarity    | ✅                   | ✅                | ✅            |
-| Damerau-Levenshtein       | ✅                   | ❌                | ❌            |
-| Hamming Distance          | ✅                   | ❌                | ❌            |
-| Jaro Similarity           | ✅                   | ✅                | ❌            |
-| Jaro-Winkler              | ✅                   | ✅                | ❌            |
-| **Token-Based Algorithms**|                      |                   |               |
-| Jaccard Similarity        | ✅                   | ✅                | ❌            |
-| Sorensen-Dice             | ✅                   | ❌                | ❌            |
-| Tversky Index             | ✅                   | ❌                | ❌            |
-| Overlap Coefficient       | ✅                   | ❌                | ❌            |
-| Cosine Similarity         | ✅                   | ✅                | ❌            |
-| **Vector-Based Algorithms**|                     |                   |               |
-| Euclidean Distance        | ✅                   | ❌                | ❌            |
-| Manhattan Distance        | ✅                   | ❌                | ❌            |
-| Chebyshev Distance        | ✅                   | ❌                | ❌            |
-| **Sequence-Based Algorithms** |                 |                   |               |
-| LCS (Longest Common Subsequence) | ❌           | ✅                | ❌            |
-| Ratcliff-Obershelp        | ❌                   | ❌                | ❌            |
-| **Configuration & Features** |                  |                   |               |
-| Case-insensitive comparison | ✅                 | ✅                | ✅            |
-| Configurable n-gram sizes | ✅                   | ❌                | ❌            |  
-| Word vs character tokenization | ✅              | ❌                | ❌            |
-| Unicode normalization     | ✅                   | Partial           | ❌            |
-| Emoji support             | ✅                   | ✅                | ✅            |
-| **Performance & API**     |                      |                   |               |
-| Native implementation (C++)| ✅                   | ❌                | ❌            |
-| Asynchronous API          | ✅                   | ❌                | ❌            |
-| Worker thread support     | ✅                   | ❌                | ❌            |
-| TypeScript definitions    | ✅                   | ✅                | ✅            |
-| Memory optimization       | ✅                   | ❌                | ❌            |
+| Algorithm Category               | text-similarity-node | string-comparison | similarity |
+| -------------------------------- | -------------------- | ----------------- | ---------- |
+| **Edit-Based Algorithms**        |                      |                   |            |
+| Levenshtein Distance             | ✅                   | ✅                | ❌         |
+| Levenshtein Similarity           | ✅                   | ✅                | ✅         |
+| Damerau-Levenshtein              | ✅                   | ❌                | ❌         |
+| Hamming Distance                 | ✅                   | ❌                | ❌         |
+| Jaro Similarity                  | ✅                   | ✅                | ❌         |
+| Jaro-Winkler                     | ✅                   | ✅                | ❌         |
+| **Token-Based Algorithms**       |                      |                   |            |
+| Jaccard Similarity               | ✅                   | ✅                | ❌         |
+| Sorensen-Dice                    | ✅                   | ❌                | ❌         |
+| Tversky Index                    | ✅                   | ❌                | ❌         |
+| Overlap Coefficient              | ✅                   | ❌                | ❌         |
+| Cosine Similarity                | ✅                   | ✅                | ❌         |
+| **Vector-Based Algorithms**      |                      |                   |            |
+| Euclidean Distance               | ✅                   | ❌                | ❌         |
+| Manhattan Distance               | ✅                   | ❌                | ❌         |
+| Chebyshev Distance               | ✅                   | ❌                | ❌         |
+| **Sequence-Based Algorithms**    |                      |                   |            |
+| LCS (Longest Common Subsequence) | ❌                   | ✅                | ❌         |
+| Ratcliff-Obershelp               | ❌                   | ❌                | ❌         |
+| **Configuration & Features**     |                      |                   |            |
+| Case-insensitive comparison      | ✅                   | ✅                | ✅         |
+| Configurable n-gram sizes        | ✅                   | ❌                | ❌         |
+| Word vs character tokenization   | ✅                   | ❌                | ❌         |
+| Unicode normalization            | ✅                   | Partial           | ❌         |
+| Emoji support                    | ✅                   | ✅                | ✅         |
+| **Performance & API**            |                      |                   |            |
+| Native implementation (C++)      | ✅                   | ❌                | ❌         |
+| Asynchronous API                 | ✅                   | ❌                | ❌         |
+| Worker thread support            | ✅                   | ❌                | ❌         |
+| TypeScript definitions           | ✅                   | ✅                | ✅         |
+| Memory optimization              | ✅                   | ❌                | ❌         |
 
 ## Performance Comparison
 
@@ -418,10 +473,10 @@ Comprehensive Unicode support with proper handling of:
 
 ```javascript
 // International text examples
-textSimilarity.similarity.levenshtein('Москва', 'москва', false); // 1.0
-textSimilarity.similarity.jaccard('你好世界', '你好世间'); // 0.5
+textSimilarity.similarity.levenshtein("Москва", "москва", false); // 1.0
+textSimilarity.similarity.jaccard("你好世界", "你好世间"); // 0.5
 // Emoji support
-textSimilarity.similarity.cosine('Hello 👋🌍', 'Hello 👋🌎'); // 0.86
+textSimilarity.similarity.cosine("Hello 👋🌍", "Hello 👋🌎"); // 0.86
 ```
 
 ## Development

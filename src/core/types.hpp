@@ -52,11 +52,11 @@ struct AlgorithmConfig {
   uint32_t ngram_size{2U};
 
   // Algorithm-specific parameters
-  std::optional<double> threshold{};       // For early termination
-  std::optional<double> alpha{};           // Tversky alpha
-  std::optional<double> beta{};            // Tversky beta
-  std::optional<double> prefix_weight{};   // Jaro-Winkler prefix weight
-  std::optional<uint32_t> prefix_length{}; // Jaro-Winkler prefix length
+  std::optional<double> threshold{};         // For early termination
+  std::optional<double> alpha{};             // Tversky alpha
+  std::optional<double> beta{};              // Tversky beta
+  std::optional<double> prefix_weight{};     // Jaro-Winkler prefix weight
+  std::optional<uint32_t> prefix_length{};   // Jaro-Winkler prefix length
   std::optional<size_t> max_string_length{}; // Max input string length (bytes)
 };
 
