@@ -22,6 +22,20 @@ High-performance and memory efficient native C++ text similarity algorithms for 
 - **Production Ready**: Memory safety, comprehensive testing, and error handling
 - **Easy Integration**: Simple API compatible with existing workflows
 
+## Prerequisites
+
+Before installing, ensure you have the necessary build tools installed on your system:
+
+### Windows
+- **Visual Studio 2017 or newer** (with **"Desktop development with C++"** workload installed).
+- **Python 3.x** (required by `node-gyp`).
+
+### macOS
+- **Xcode Command Line Tools** (`xcode-select --install`).
+
+### Linux
+- **GCC/G++** and **Python 3.x**.
+
 ## Installation
 
 ```bash

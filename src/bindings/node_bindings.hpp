@@ -3,6 +3,7 @@
 #include "../engine/similarity_engine.hpp"
 #include <memory>
 #include <napi.h>
+#include <type_traits>
 
 namespace TextSimilarity::Bindings {
 

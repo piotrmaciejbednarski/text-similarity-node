@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <locale>
 #include <stdexcept>
+#include <utility>
 
 namespace TextSimilarity::Core {
 
